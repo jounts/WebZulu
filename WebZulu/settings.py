@@ -124,3 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# WebZulu settings
+
+GIS_SERVER = os.getenv('GIS_SERVER')
