@@ -1,2 +1,4 @@
 SECRET_KEY=''
 DEBUG=False
+ALLOWED_HOSTS='127.0.0.1, localhost'
+GIS_SERVER='http://zs.zulugis.ru:6473/zws'
