@@ -37,8 +37,8 @@
 			src_xyz.tileLoadFunction = function (imageTile, requestBody) {
 				var xhr = new XMLHttpRequest();
 				xhr.open("POST", 'http://gis.yanenergo.online:6473/zws', true);
+				xhr.setRequestHeader('Authorization', 'Basic ' + '{{credentials|safe}}');
 				xhr.responseType = "arraybuffer";
-
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4 && xhr.status == 200) {
 						var uInt8Array = new Uint8Array(xhr.response);
