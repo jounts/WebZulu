@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -128,3 +128,5 @@ STATIC_URL = '/static/'
 # WebZulu settings
 
 GIS_SERVER = os.getenv('GIS_SERVER')
+ZULU_USER = os.getenv('ZULU_USR')
+ZULU_PWD = os.getenv('ZULU_PWD')
