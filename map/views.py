@@ -14,7 +14,7 @@ class IndexView(View):
     def get(self, request):
         layers = ['Niznevartovsk_AST:Gaz', 'Niznevartovsk_AST:SanOchistka', 'Niznevartovsk_AST:Svet']# ['Anivskiy_ST_SViV:vs', 'Anivskiy_ST_SViV:vo', 'Anivskiy_ST_SViV:TS'] #['test:vs', 'test:ts']
         context = {'layer_list': layers}
-        context.update({'credentials':get_credentials()})
+        context.update({'credentials': get_credentials()})
         context.update({'GIS_SERVER': GIS_SERVER})
         context.update({'CENTRE_CORD': get_centre_map(layers)})
 
