@@ -23,7 +23,8 @@
 				}),
 			],
             view: new ol.View({
-                center: ol.proj.fromLonLat([142.5230, 46.7103]),
+                center: ol.proj.fromLonLat({{CENTRE_CORD|safe}}),
+                <!--[142.5230, 46.7103]-->
                 zoom: 13
             })
         });
@@ -31,12 +32,10 @@
 		for (var i=0; i < zwsLayerNames.length; i++) {
 		    let layer_name = String(zwsLayerNames[i]);
 			let src_xyz = new ol.source.XYZ({});
-			console.log(i);
-			console.log(layer_name, typeof(layer_name));
 
 			src_xyz.tileLoadFunction = function (imageTile, requestBody) {
 				var xhr = new XMLHttpRequest();
-				xhr.open("POST", 'http://gis.yanenergo.online:6473/zws', true);
+				xhr.open("POST", '{{GIS_SERVER|safe}}', true);
 				xhr.setRequestHeader('Authorization', 'Basic ' + '{{credentials|safe}}');
 				xhr.responseType = "arraybuffer";
 				xhr.onreadystatechange = function () {
