@@ -35,7 +35,7 @@
 
 			src_xyz.tileLoadFunction = function (imageTile, requestBody) {
 				var xhr = new XMLHttpRequest();
-				xhr.open("POST", '{{GIS_SERVER|safe}}', true);
+				xhr.open("POST", location.protocol + '//' + location.hostname + '/zws', true);
 				xhr.setRequestHeader('Authorization', 'Basic ' + '{{credentials|safe}}');
 				xhr.responseType = "arraybuffer";
 				xhr.onreadystatechange = function () {
