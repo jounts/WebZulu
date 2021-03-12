@@ -22,5 +22,5 @@ class User(models.Model):
     auth_user = models.OneToOneField(UserAuth, on_delete=models.CASCADE)
     
     def _str__(self):
-        return f'{UserAuth.name}'
+        return f'{UserAuth.username}'
         
