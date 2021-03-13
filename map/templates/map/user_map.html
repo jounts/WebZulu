@@ -13,7 +13,7 @@
     <div>Данный пример показывает как используя OpenLayers добавить в карту слой с сервера Zulu используя POST-запросы.</div>
 	<div id="map" style="width: 100%; height: 80vh"></div>
     <script type="text/javascript">
-		var zwsLayerNames = {{layer_list|safe}};
+		var zwsLayerNames = {{project_list|safe}};
 
 		var map = new ol.Map({
             target: 'map',
@@ -29,7 +29,7 @@
         });
 
 		for (var i=0; i < zwsLayerNames.length; i++) {
-		    let layer_name = String(zwsLayerNames[i]['full_name']);
+		    let layer_name = String(zwsLayerNames[i]);
 			let src_xyz = new ol.source.XYZ({});
 
 			src_xyz.tileLoadFunction = function (imageTile, requestBody) {
