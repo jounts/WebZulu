@@ -38,7 +38,6 @@ class IndexView(View):
                     name=namespace
                 )
             )
-            print(list(layers.values()))
         else:
             layers = []
         context = {'layer_list': list(layers.values())}
