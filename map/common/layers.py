@@ -9,6 +9,8 @@ import requests
 from WebZulu.settings import GIS_SERVER
 from map.common.zulu_auth import get_credentials
 
+from map.models import Layer, NameSpace
+
 
 def get_layers() -> dict:
     """
@@ -48,16 +50,37 @@ def parse_data(data: str) -> dict:
 
     for element in root[0]:
         if element.tag == 'Layer' and len(element):
-            project = element[0].text[:element[0].text.find(':')]
-            if project not in parsed_data.keys():
-                parsed_data[project] = []
-            parsed_data[project].append(
+            namespace = element[0].text[:element[0].text.find(':')]
+            if namespace not in parsed_data.keys():
+                parsed_data[namespace] = []
+            parsed_data[namespace].append(
                 {'fullname': element[0].text,
                  'name': element[0].text[element[0].text.find(':') + 1:],
                  'title': element[1].text}
             )
 
     return parsed_data
+
+
+def parse_layers():
+    data = get_layers()
+    for element in data.keys():
+        if not NameSpace.objects.filter(name=element):
+            namespace = NameSpace(name=element)
+            namespace.save()
+
+        namespace_pk = NameSpace.objects.get(name=element)
+
+        for src_layer in data[element]:
+            if not Layer.objects.filter(full_name=src_layer['fullname']):
+                layer = Layer(
+                    name=src_layer['name'],
+                    full_name=src_layer['fullname'],
+                    title=src_layer['title'],
+                    namespace=namespace_pk
+                )
+                layer.save()
+
 
 
 def get_source_bounds(full_layer_name: str) -> str:
@@ -91,9 +114,10 @@ def parse_bounds(source_data: str) -> dict:
 
     root = ElementTree.fromstring(source_data)
 
-    for element in list(root[0][0]):
-        if element.attrib['CRS'] == 'EPSG:4326':
-            return element.attrib
+    if root.items():
+        for element in list(root[0][0]):
+            if element.attrib['CRS'] == 'EPSG:4326':
+                return element.attrib
 
 
 def get_centre_map(layer_list: list) -> tuple:
@@ -106,7 +130,7 @@ def get_centre_map(layer_list: list) -> tuple:
     lon_list = []
 
     for layer in layer_list:
-        bounds = parse_bounds(get_source_bounds(layer))
+        bounds = parse_bounds(get_source_bounds(layer['full_name']))
 
         if bounds is not None:
             lat_list.append((float(bounds['minx']) + float(bounds['maxx'])) / 2)
@@ -119,4 +143,5 @@ def get_centre_map(layer_list: list) -> tuple:
 
 
 if __name__ == '__main__':
-    print(get_centre_map(layer_list = ['test:vs', 'test:ts']))
+    # print(get_centre_map(layer_list = ['test:vs', 'test:ts']))
+    print(get_layers())
