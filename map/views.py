@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import F
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View, generic
 
@@ -31,20 +30,25 @@ class MapIndexView(LoginRequiredMixin, generic.ListView):
 class IndexView(View):
     def get(self, request):
         project = Project.objects.filter(user=request.user).first()
-        namespace = project.namespace
-        if project:
-            layers = Layer.objects.filter(
-                namespace=NameSpace.objects.get(
-                    name=namespace
-                )
-            )
-        else:
-            layers = []
-        context = {'layer_list': list(layers.values())}
-        context.update({'credentials': get_credentials()})
-        context.update({'CENTRE_CORD': get_centre_map(list(layers.values()))})
 
-        return render(request, 'map/index.html', context)
+        if not isinstance(project, type(None)):
+            namespace = project.namespace
+
+            if project:
+                layers = Layer.objects.filter(
+                    namespace=NameSpace.objects.get(
+                        name=namespace
+                    )
+                )
+            else:
+                layers = []
+            context = {'layer_list': list(layers.values())}
+            context.update({'credentials': get_credentials()})
+            context.update({'CENTRE_CORD': get_centre_map(list(layers.values()))})
+
+            return render(request, 'map/index.html', context)
+        return redirect('accounts/login')
+
 
 
 class PublicView(View):

@@ -114,10 +114,9 @@ def parse_bounds(source_data: str) -> dict:
 
     root = ElementTree.fromstring(source_data)
 
-    if root.items():
-        for element in list(root[0][0]):
-            if element.attrib['CRS'] == 'EPSG:4326':
-                return element.attrib
+    for element in list(root[0][0]):
+        if element.attrib['CRS'] == 'EPSG:4326':
+            return element.attrib
 
 
 def get_centre_map(layer_list: list) -> tuple:
@@ -130,14 +129,11 @@ def get_centre_map(layer_list: list) -> tuple:
     lon_list = []
 
     for layer in layer_list:
-        print(layer['full_name'], type(layer['full_name']))
         bounds = parse_bounds(get_source_bounds(layer['full_name']))
 
         if bounds is not None:
             lat_list.append((float(bounds['minx']) + float(bounds['maxx'])) / 2)
             lon_list.append((float(bounds['miny']) + float(bounds['maxy'])) / 2)
-
-        print(bounds)
 
     if lat_list and lon_list:
         return [round(sum(lon_list) / len(lon_list), 6), round(sum(lat_list) / len(lat_list), 6)]
