@@ -6,14 +6,15 @@ from django.utils.decorators import method_decorator
 from django.views import View, generic
 
 from .models import Project, NameSpace, Layer
+from .tasks import import_zulu_data
 
 from .common.zulu_auth import get_credentials
-from .common.layers import get_centre_map, parse_layers
+from .common.layers import get_centre_map
 
 
 class MapAdminView(View):
     def get(self, request):
-        parse_layers()
+        import_zulu_data.delay()
         html = 'LayerList is updating'
         return HttpResponse(html)
 
