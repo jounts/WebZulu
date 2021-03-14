@@ -136,3 +136,10 @@ LOGIN_REDIRECT_URL = 'signed'
 GIS_SERVER = os.getenv('GIS_SERVER')
 ZULU_USER = os.getenv('ZULU_USR')
 ZULU_PWD = os.getenv('ZULU_PWD')
+
+# Celery & Redis settings
+REDIS_HOST = os.getenv('REDIS_H')
+REDIS_PORT = os.getenv('REDIS_P')
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
