@@ -29,7 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = bool(os.getenv('DEBUG', True))
+print(DEBUG)
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS').split(',')]
 
@@ -129,7 +130,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = 'signed'
+LOGIN_REDIRECT_URL = 'index'
 
 # WebZulu settings
 
@@ -138,6 +139,7 @@ ZULU_USER = os.getenv('ZULU_USR')
 ZULU_PWD = os.getenv('ZULU_PWD')
 
 # Celery & Redis settings
+CELERY_TIME_ZONE = 'Europe/Moscow'
 REDIS_HOST = os.getenv('REDIS_H')
 REDIS_PORT = os.getenv('REDIS_P')
 CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
