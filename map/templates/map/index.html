@@ -1,15 +1,12 @@
-<!doctype html>
-<html lang="en">
+{% extends "map/base.html" %}
 
-<head>
+{% block head %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
-    <title>OpenLayers example</title>
-    <meta charset="utf-8" />
-</head>
+{% endblock %}
 
-<body>
-    <h3>OpenLayers: Карта </h3>
+{% block content %}
+    <h3>OpenLayers: {{namespace|safe}} </h3>
     <div>Данный пример показывает как используя OpenLayers добавить в карту слой с сервера Zulu используя POST-запросы.</div>
 	<div id="map" style="width: 100%; height: 80vh"></div>
     <script type="text/javascript">
@@ -23,7 +20,7 @@
 				}),
 			],
             view: new ol.View({
-                center: ol.proj.fromLonLat({{CENTRE_CORD|safe}}),
+                center: ol.proj.fromLonLat({{centre|safe}}),
                 zoom: 13
             })
         });
@@ -70,6 +67,4 @@
 			map.addLayer(new ol.layer.Tile({source: src_xyz}))
 		};
     </script>
-</body>
-
-</html>
+{% endblock %}
