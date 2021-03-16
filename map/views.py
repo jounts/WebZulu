@@ -10,14 +10,6 @@ from .common.zulu_auth import get_credentials
 from .common.layers import get_centre_map
 
 
-class MapIndexView(LoginRequiredMixin, generic.ListView):
-    model = Project
-    template_name = 'map/index.html'
-
-    def get_queryset(self):
-        return Project.objects.filter(user=self.request.user)
-
-
 @method_decorator(login_required, name='dispatch')
 class IndexView(View):
     def get(self, request):
@@ -40,8 +32,3 @@ class IndexView(View):
 
             return render(request, 'map/index.html', context)
         return redirect('accounts/login')
-
-
-class PublicView(View):
-    def get(self, request):
-        pass
