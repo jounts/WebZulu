@@ -9,6 +9,8 @@ from .models import Project, NameSpace, Layer
 from .common.zulu_auth import get_credentials
 from .common.layers import get_centre_map
 
+from WebZulu.settings import GIS_SERVER
+
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(View):
@@ -27,6 +29,7 @@ class IndexView(View):
                 layers = []
             context = {'namespace': namespace}
             context.update({'layer_list': layers})
+            context.update({'gis_server': GIS_SERVER})
             context.update({'credentials': get_credentials()})
             context.update({'centre': get_centre_map(layers)})
 
