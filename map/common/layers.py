@@ -62,7 +62,11 @@ def parse_data(data: str) -> dict:
     return parsed_data
 
 
-def parse_layers():
+def write_layers():
+    """
+    write zulu data to db
+    :return: None
+    """
     data = get_layers()
     for element in data.keys():
         if not NameSpace.objects.filter(name=element):
@@ -80,7 +84,6 @@ def parse_layers():
                     namespace=namespace_pk
                 )
                 layer.save()
-
 
 
 def get_source_bounds(full_layer_name: str) -> str:
